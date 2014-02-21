@@ -146,8 +146,8 @@
             }
 
             var gradient= director.ctx.createLinearGradient(0,0,director.width,director.height);
-            gradient.addColorStop(0,'#000000');
-            gradient.addColorStop(1,'#00007f');
+            gradient.addColorStop(0,'#FFFFFF');
+            gradient.addColorStop(1,'#FFFFFF');
 
             var gr= new CAAT.Foundation.ActorContainer().
                     setBounds(0,0,director.width,director.height).

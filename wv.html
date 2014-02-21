@@ -1,0 +1,91 @@
+<!doctype html>  
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,user-scalable=0"/>
+
+    <script src = "CocoonJSExtensions/CocoonJS.js"></script>
+    <script src = "CocoonJSExtensions/CocoonJS_App.js"></script>
+    <script src = "CocoonJSExtensions/CocoonJS_App_ForWebView.js"></script>
+	<script src="CocoonJSExtensions/CocoonJS_Social.js" type="text/javascript"></script>
+	<script src="CocoonJSExtensions/CocoonJS_SocialGaming.js" type="text/javascript"></script>
+	<script src="CocoonJSExtensions/CocoonJS_SocialGamingManager.js" type="text/javascript"></script>
+	<script src="CocoonJSExtensions/CocoonJS_SocialGaming_Facebook.js" type="text/javascript"></script>
+
+</head>
+<body>
+	<div id="fb-icon">
+		<img src="assets/facebook-icon.png" width="5%" height="5%" align="right">
+	</div>
+	<script type="text/javascript">
+	window.addEventListener('load', function(){
+		Prefs = 
+        {
+            FACEBOOK_PARAMS : 
+            {
+                applicationID       : 'xxxxxxxxxxx1152',
+                channelURL          : 'channel.html',
+            }
+        };
+
+		var socialServiceFB = CocoonJS.SocialGaming.Facebook;
+        socialServiceManager = CocoonJS.SocialGaming.SocialGamingManager;
+
+        socialServiceManager.registerSocialGamingService( "fb", {
+            service : socialServiceFB,
+            userData : null
+        });
+        socialServiceFB.requestInitialization(window.Prefs.FACEBOOK_PARAMS);
+
+        var loggedIn = socialServiceFB.isLoggedIn();
+
+		var login = function(){
+			console.log("trying to log");
+			CocoonJS.SocialGaming.Facebook.requestLogin();
+		}
+
+		CocoonJS.SocialGaming.Facebook.onRequestLoginSucceed.addEventListener
+        (
+            function() 
+            {         
+                loggedIn = true; 
+                console.log('logged in');
+
+                // remove fb icon
+                var fbIcon = document.getElementById("fb-icon");
+                fbIcon.removeEventListener('click', login);
+                fbIcon.parentNode.removeChild(fbIcon);
+
+                // Get personal info
+
+                var successCallBack = function(result){
+                	console.log(result);
+                	var nameDiv = document.createElement("div");
+                	var newContent = document.createTextNode(result.userName);
+                	nameDiv.appendChild(newContent);
+                	nameDiv.align = "right";
+                	document.body.appendChild(nameDiv);
+                }
+
+                var failureCallBack = function(result){
+                	console.log(result);
+                }
+
+                CocoonJS.SocialGaming.Facebook.requestMeUserInfo(successCallBack, failureCallBack);
+            }
+        );
+
+        CocoonJS.SocialGaming.Facebook.onRequestLoginFailed.addEventListener
+        (    
+            function(msg) 
+            {
+                console.error("onRequestLoginFailed: " + msg);
+                loggedIn = false; 
+            }
+        );
+
+		var fb_icon = document.getElementById("fb-icon");
+		fb_icon.addEventListener('click', login);
+	});
+	</script
+</body>

@@ -18,7 +18,23 @@
 
 </body>
 
+<script src="CocoonJSExtensions/CocoonJS.js" type="text/javascript"></script>
+<script src="CocoonJSExtensions/CocoonJS_App.js" type="text/javascript"></script>
+<script src="CocoonJSExtensions/CocoonJS_App_ForCocoonJS.js" type="text/javascript"></script>
 <script src="CAAT/src/Core/ModuleManager.js"></script>
 <script src="js/anim.js"></script>
+
+<script>
+    CocoonJS.App.onLoadInTheWebViewSucceed.addEventListener(function(pageURL) {
+        // Show the webview. By default, the webview is hidden.
+        CocoonJS.App.showTheWebView();
+    });
+
+    CocoonJS.App.onLoadInTheWebViewFailed.addEventListener(function(pageURL) {
+        console.error("Could not load the HTML file in the webview");
+    });
+
+    CocoonJS.App.loadInTheWebView("wv.html");
+</script>
 
 </html>
